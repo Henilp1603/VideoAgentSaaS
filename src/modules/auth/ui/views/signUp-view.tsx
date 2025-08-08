@@ -24,6 +24,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
+import { FaGithub } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
+
 const formSchema = z
   .object({
     name: z.string().min(1, { message: "Name is Required." }),
@@ -60,6 +63,26 @@ const SignUpView = () => {
         onSuccess: () => {
           setPending(false);
           router.push("/");
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+        },
+      }
+    );
+  };
+
+  const onSocialSubmit = (provider: "github" | "google") => {
+    setError(null);
+    setPending(true);
+
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -177,7 +200,7 @@ const SignUpView = () => {
                   </Alert>
                 )}
                 <Button disabled={pending} type="submit" className="w-full">
-                  Sign In
+                  Sign Up
                 </Button>
                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:justify-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -191,22 +214,24 @@ const SignUpView = () => {
                     variant={"outline"}
                     type="button"
                     className="w-full"
+                    onClick={() => onSocialSubmit("google")}
                   >
-                    Google
+                    <FaGoogle />
                   </Button>
                   <Button
                     disabled={pending}
                     variant={"outline"}
                     type="button"
                     className="w-full"
+                    onClick={() => onSocialSubmit("github")}
                   >
-                    Github
+                    <FaGithub />
                   </Button>
                 </div>
                 <div className="text-center text-sm">
                   Already have an account?{" "}
                   <Link
-                    href={"/auth/signUp"}
+                    href={"/auth/signIn"}
                     className="underline underline-offset-4"
                   >
                     Sign In
