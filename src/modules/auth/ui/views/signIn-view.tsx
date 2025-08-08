@@ -24,6 +24,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 
+import { FaGithub } from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
+
 const formSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1, {
@@ -37,7 +40,7 @@ const SignInView = () => {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
     setError(null);
     setPending(true);
 
@@ -50,6 +53,26 @@ const SignInView = () => {
         onSuccess: () => {
           setPending(false);
           router.push("/");
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+        },
+      }
+    );
+  };
+
+  const onSocialSubmit = (provider: "github" | "google") => {
+    setError(null);
+    setPending(true);
+
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -141,16 +164,18 @@ const SignInView = () => {
                     variant={"outline"}
                     type="button"
                     className="w-full"
+                    onClick={() => onSocialSubmit("google")}
                   >
-                    Google
+                    <FaGoogle />
                   </Button>
                   <Button
                     disabled={pending}
                     variant={"outline"}
                     type="button"
                     className="w-full"
+                    onClick={() => onSocialSubmit("github")}
                   >
-                    Github
+                    <FaGithub />
                   </Button>
                 </div>
                 <div className="text-center text-sm">
