@@ -15,7 +15,7 @@ const HomeView = () => {
   if (!session) {
     return <p>Loading...</p>;
   }
-  return <div className="flex flex-col gap-y-4 p-4">Home</div>;
+  return <div className="flex flex-col gap-y-4 p-4">Home Page</div>;
 };
 
 export default HomeView;
