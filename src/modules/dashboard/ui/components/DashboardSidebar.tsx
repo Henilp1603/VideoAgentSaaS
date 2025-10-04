@@ -27,7 +27,7 @@ const firstSection = [
   },
   {
     icon: BotIcon,
-    label: "Agets",
+    label: "Agents",
     href: "/agents",
   },
 ];
