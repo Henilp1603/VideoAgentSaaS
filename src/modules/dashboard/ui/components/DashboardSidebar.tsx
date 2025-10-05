@@ -18,6 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DashboardUserBtn from "./DashboardUserBtn";
+import Logo from "../../../../../public/logo.svg";
 
 const firstSection = [
   {
@@ -47,7 +48,7 @@ const DashboardSidebar = () => {
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">
         <Link href={"/"} className="flex items-center gap-2 px-2 pt-2">
-          <Image alt="imge" src={"./logo.svg"} height={36} width={36} />
+          <Image alt="image" src={Logo} height={36} width={36} />
           <p className="text-2xl font-semibold">VideoChat Agent</p>
         </Link>
       </SidebarHeader>
